@@ -1,0 +1,52 @@
+name: Java CI with Maven
+
+# Controls when the action will run
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Specifies the environment the tests will run in
+jobs:
+  build:
+
+    # The environment where the workflow runs
+    runs-on: ubuntu-latest
+
+    # Steps define the actions the workflow will perform
+    steps:
+      # Checks out the repository so the workflow has access to the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK 17 (adjust the version if needed)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Cache the Maven dependencies to speed up the workflow
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Runs the Maven build and test commands
+      - name: Build and test with Maven
+        run: mvn clean install
+
+      # Optionally, you can also add a step to upload test results as artifacts
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/
