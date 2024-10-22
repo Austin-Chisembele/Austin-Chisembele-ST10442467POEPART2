@@ -1,0 +1,30 @@
+
+name: Main workflow
+
+
+on:
+  workflow_dispatch:
+  
+    inputs:
+      name:
+       
+        description: 'Welcome to EasyKanban'
+       
+        default: 'Login Successful'
+       
+        required: true
+        # The data type of the input
+        type: string
+
+
+jobs:
+ 
+  greet:
+  
+    runs-on: ubuntu-latest
+
+    
+    steps:
+   
+    - name: Send greeting
+      run: echo "Hello ${{ inputs.name }}"
