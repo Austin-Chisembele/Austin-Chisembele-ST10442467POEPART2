@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  build:  # Name the job
+  automate-unit-tests:  # Renamed the job
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Maven
-      run: mvn clean install -e  # Added -e for detailed error output
+      run: mvn clean install
 
     - name: Run tests
-      run: mvn test -e  # Added -e for detailed error output
+      run: mvn test
